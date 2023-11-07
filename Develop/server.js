@@ -8,8 +8,13 @@ app.use(express.static('public'));
 //This is basically like boiler plate server stuff
 
 //this is for the json api notes
+app.get('/' , (req,res) =>
+    res.sendFile(path.join(__dirname, '../Develop/public/index.html'))
+)
+
 app.get('/api/notes' , (req,res) =>
 res.json({
+    
     term:file,
     description:'The database for the notes that are being taken'
 }));
