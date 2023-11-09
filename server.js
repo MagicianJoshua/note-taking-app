@@ -2,18 +2,19 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const PORT = 3001;
-const file = require("../Develop/db/db.json");
+const file = require("./db/db.json");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const ID = uuidv4();
+
 
 app.use(express.static("public"));
 app.use(express.json());
 //This is basically like boiler plate server stuff
 
 //this is for the json api notes
-app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "../Develop/public/index.html"))
+app.get("/", (req, res) =>
+  res.sendFile(path.join(__dirname, "./public/index.html"))
 );
 
 app.get("/api/notes", (req, res) => res.json(file));
@@ -32,7 +33,7 @@ app.get("/api/notes/:id", (req, res) => {
 
 //this is for the html for notes
 app.get("/notes", (req, res) =>
-  res.sendFile(path.join(__dirname, "../Develop/public/notes.html"))
+  res.sendFile(path.join(__dirname, "./public/notes.html"))
 );
 
 app.post("/api/notes", (req, res) => {
@@ -46,7 +47,7 @@ app.post("/api/notes", (req, res) => {
   };
 
   noteDb.push(postNote);
-  fs.writeFile("../Develop/db/db.json", JSON.stringify(noteDb), (err) => {
+  fs.writeFile("./db/db.json", JSON.stringify(noteDb), (err) => {
     if (err) {
       console.log(err);
     } else {
