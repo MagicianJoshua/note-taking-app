@@ -3,6 +3,10 @@ const path = require("path");
 const app = express();
 const PORT = 3001;
 const file = require("../Develop/db/db.json");
+const fs = require("fs");
+const { v4: uuidv4 } = require('uuid');
+uuidv4();
+
 app.use(express.static("public"));
 app.use(express.json());
 //This is basically like boiler plate server stuff
@@ -13,10 +17,7 @@ app.get("/", (req, res) =>
 );
 
 app.get("/api/notes", (req, res) =>
-  res.json({
-    term: file,
-    description: "The database for the notes that are being taken",
-  })
+  res.json(file)
 );
 
 app.get('/api/notes/:id' , (req,res) => {
@@ -42,7 +43,7 @@ app.post('/api/notes' , (req,res) => {
     console.info(req.body);
    
     const {id,title,text} = req.body;
-    
+    res.json("note saved");
 })
 
 //this is just something that triggers when the server gets running.
