@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3001;
 const file = require("./db/db.json");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
-const ID = uuidv4();
+
 
 
 app.use(express.static("public"));
@@ -37,6 +37,7 @@ app.get("/notes", (req, res) =>
 );
 
 app.post("/api/notes", (req, res) => {
+  const ID = uuidv4();
   console.info(`${req.method} request received to add a review`);
   console.info(req.body);
   const noteDb = file;
@@ -56,6 +57,34 @@ app.post("/api/notes", (req, res) => {
   });
   res.json(postNote);
 });
+
+
+app.delete("/api/notes/:id" , async (req,res) => {
+// we have to loop through the json object and compare the paramter id with the req.body.id
+    const data = file;
+    let paramId = req.params.id
+    
+    for (let i = 0; i < data.length; i++) {
+      
+       console.log("old data",data)
+
+      if (data[i].id = paramId ) {
+        data.splice(i,1);
+        console.log("New data",data);
+        fs.writeFile("./db/db.json", JSON.stringify(data), (err) => {
+         if (err){
+          console.log(err)
+         } else {
+          console.log("note deleted");
+         }
+        })
+
+        return 
+      }
+    }
+    })
+
+
 
 //this is just something that triggers when the server gets running.
 app.listen(PORT, () => console.log("server is listening!"));
